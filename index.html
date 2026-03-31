@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AI chat</title>
+        /* by b站:流星河夜 */
     <style>
         :root {
             --primary-color: #3b82f6;
@@ -185,7 +186,7 @@
         .main-chat { flex: 1; display: flex; flex-direction: column; background: var(--chat-bg); position: relative; min-width: 0; height: 100%; }
         .chat-header { padding: 15px 20px; border-bottom: 1px solid var(--border-color); background: var(--chat-bg); display: flex; justify-content: space-between; align-items: center; height: 60px; flex-shrink: 0; }
         .header-left, .header-actions { display: flex; align-items: center; gap: 8px; }
-        .header-title { font-weight: 600; font-size: 18px; margin-left: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+        .header-title { font-weight: 600; font-size: 18px; margin-left: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px; }
         
         .btn-icon { background: var(--border-color); border: none; cursor: pointer; padding: 10px; border-radius: var(--radius-md); font-size: 18px; transition: all 0.2s; color: var(--text-color); display: flex; align-items: center; justify-content: center; }
         .btn-icon:active { background: var(--primary-color); color: white; transform: scale(0.95); }
@@ -406,7 +407,7 @@
             </div>
             <div class="config-group">
                 <label>API 秘钥(可点击上方链接获取)</label>
-                <input type="password" id="apiKey" class="config-input" placeholder="sk-...">
+                <input type="password" id="apiKey" class="config-input" placeholder="sk-......">
                 <div class="config-hint">所有信息仅保存在本地浏览器</div>
             </div>
             <div class="config-group" style="position: relative;">
@@ -620,6 +621,8 @@
             `}).join('');
         }
 
+        /* by liuxingheye */
+
         renderMessages() {
             const container = document.getElementById('chatMessages');
             const chat = this.getCurrentChat();
@@ -814,6 +817,9 @@
     });
     
     closeConfigBtn.addEventListener('click', () => toggleConfigDrawer(false));
+
+        /* QQ: 228085292 */
+
 
     newChatBtn.addEventListener('click', () => {
         chatManager.createNewChat();
