@@ -52,10 +52,10 @@
             background: var(--bg-color);
             color: var(--text-color);
             height: 100vh;
-            height: 100dvh; /* 动态视口高度，适配移动端地址栏 */
+            height: 100dvh;
             overflow: hidden;
             transition: background 0.3s, color 0.3s;
-            position: fixed; /* 防止整体滚动 */
+            position: fixed;
             width: 100%;
         }
 
@@ -75,7 +75,6 @@
             overflow: hidden;
         }
 
-        /* PC端隐藏逻辑 */
         @media (min-width: 769px) {
             .sidebar.collapsed-pc {
                 width: 0;
@@ -85,14 +84,13 @@
             }
         }
 
-        /* 移动端适配：全屏侧边栏 */
         @media (max-width: 768px) {
             .sidebar {
                 position: fixed;
                 left: 0; top: 0;
                 height: 100%;
-                width: 100%; /* 全屏宽度 */
-                max-width: 320px; /* 最大宽度限制 */
+                width: 100%;
+                max-width: 320px;
                 transform: translateX(-100%);
                 z-index: 100;
                 box-shadow: none;
@@ -110,19 +108,19 @@
             width: 100%; padding: 12px; background: var(--primary-color); color: white;
             border: none; border-radius: var(--radius-md); cursor: pointer; font-size: 14px; font-weight: 600;
             transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            touch-action: manipulation; /* 优化触摸 */
+            touch-action: manipulation;
         }
         .btn-new:active { background: var(--primary-hover); transform: scale(0.98); }
 
         .chat-list { flex: 1; overflow-y: auto; padding: 15px; -webkit-overflow-scrolling: touch; }
 
         .chat-item {
-            padding: 14px 15px; /* 增大垂直内边距 */
+            padding: 14px 15px;
             margin-bottom: 6px; 
             background: transparent;
             border-radius: var(--radius-md); 
             cursor: pointer; 
-            font-size: 15px; /* 字体稍大 */
+            font-size: 15px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis; 
@@ -166,8 +164,6 @@
             outline: none;
         }
         
-        /* by b站:流星河夜 */
-        
         .loading-indicator {
             width: 8px; height: 8px; border-radius: 50%;
             background: var(--primary-color);
@@ -194,7 +190,7 @@
 
         /* 消息区 */
         .messages-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; -webkit-overflow-scrolling: touch; }
-        .message { display: flex; animation: fadeIn 0.3s ease; max-width: 85%; /* 移动端稍宽 */ }
+        .message { display: flex; animation: fadeIn 0.3s ease; max-width: 85%; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         .message.user { align-self: flex-end; }
@@ -207,13 +203,12 @@
         .message.user .message-bubble { background: var(--msg-user-bg); color: var(--msg-user-text); border-bottom-right-radius: 4px; }
         .message.assistant .message-bubble { background: var(--msg-bot-bg); color: var(--msg-bot-text); border-bottom-left-radius: 4px; border: 1px solid var(--border-color); }
 
-        /* 输入区 - 移动端关键优化 */
+        /* 输入区 */
         .input-area { 
             padding: 10px 15px; 
             background: var(--chat-bg); 
             border-top: 1px solid var(--border-color); 
             flex-shrink: 0; 
-            /* 适配iOS底部安全区 */
             padding-bottom: calc(15px + env(safe-area-inset-bottom)); 
         }
         .input-wrapper { display: flex; gap: 10px; background: var(--input-wrapper-bg); border-radius: var(--radius-lg); padding: 8px 12px; border: 1px solid var(--border-color); transition: all 0.2s; box-shadow: var(--shadow); align-items: flex-end; }
@@ -225,13 +220,13 @@
             background: transparent; 
             resize: none; 
             outline: none; 
-            font-size: 16px; /* 移动端字体必须>=16px防止自动缩放 */
+            font-size: 16px;
             min-height: 24px; 
             max-height: 120px; 
             line-height: 1.5; 
             font-family: inherit; 
             color: var(--text-color); 
-            padding: 4px 0; /* 垂直居中微调 */
+            padding: 4px 0;
         }
         
         .btn-send { 
@@ -254,7 +249,7 @@
         .btn-send:active { background: var(--primary-hover); transform: scale(0.95); }
         .btn-send:disabled { background: #9ca3af; cursor: not-allowed; transform: none; }
 
-        /* 配置抽屉 - 移动端全屏 */
+        /* 配置抽屉 */
         .config-drawer { 
             position: absolute; 
             top: 0; 
@@ -318,38 +313,209 @@
         .btn-load:disabled { background: #d1d5db; cursor: not-allowed; }
         .config-hint { font-size: 12px; color: var(--text-light); margin-top: 6px; }
 
-        /* 模型列表下拉样式 */
-        .model-list-container {
-            position: absolute;
-            top: 100%;
+        /* 模型选择器 - 模型广场风格 */
+        .model-selector {
+            position: fixed;
+            top: 0;
             left: 0;
-            right: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.2s ease;
+        }
+        .model-selector.show { display: flex; }
+
+        .model-selector-panel {
             background: var(--sidebar-bg);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 900px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .model-selector-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .model-selector-title { font-size: 20px; font-weight: 700; }
+        .model-count { 
+            font-size: 13px; 
+            color: var(--text-light); 
+            margin-left: 10px;
+            background: var(--border-color);
+            padding: 3px 10px;
+            border-radius: 12px;
+        }
+
+        .model-search {
+            padding: 15px 25px;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+        .model-search-input {
+            width: 100%;
+            padding: 12px 18px;
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
-            margin-top: 5px;
-            max-height: 250px;
+            font-size: 15px;
+            background: var(--input-bg);
+            color: var(--text-color);
+            outline: none;
+            transition: all 0.2s;
+        }
+        .model-search-input:focus { 
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .model-list-scroll {
+            flex: 1;
             overflow-y: auto;
-            z-index: 100;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            display: none;
+            padding: 20px 25px;
             -webkit-overflow-scrolling: touch;
         }
-        .model-list-container.show { display: block; }
-        
-        .model-item {
-            padding: 12px 15px;
-            cursor: pointer;
-            font-size: 15px;
-            transition: background 0.2s;
-            border-bottom: 1px solid var(--border-color);
+
+        /* 模型分类卡片 */
+        .model-category {
+            margin-bottom: 25px;
         }
-        .model-item:last-child { border-bottom: none; }
-        .model-item:active { background: var(--primary-color); color: white; }
+        .model-category:last-child { margin-bottom: 0; }
+
+        .model-category-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        .model-category-icon { 
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            border-radius: 10px;
+        }
+        .model-category-name { 
+            font-size: 16px; 
+            font-weight: 700; 
+            color: var(--text-color); 
+        }
+        .model-category-count { 
+            font-size: 12px; 
+            color: var(--text-light); 
+            margin-left: auto;
+            background: var(--border-color);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        /* 模型网格布局 */
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .model-item {
+            padding: 12px 14px;
+            background: var(--input-bg);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+        .model-item:hover { 
+            border-color: var(--primary-color); 
+            background: var(--bg-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .model-item:active { transform: scale(0.98); }
+        .model-item.selected { 
+            border-color: var(--primary-color); 
+            background: rgba(59, 130, 246, 0.1);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        .model-item.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .model-item-name { 
+            font-weight: 600; 
+            color: var(--text-color); 
+            word-break: break-all;
+            line-height: 1.4;
+        }
+        .model-item-version { 
+            font-size: 11px; 
+            color: var(--text-light);
+            opacity: 0.8;
+        }
+
+        .model-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+        .model-empty-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
 
         /* 遮罩 */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 15; display: none; opacity: 0; transition: opacity 0.3s; }
         .overlay.show { display: block; opacity: 1; }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .model-selector-panel {
+                max-width: 100%;
+                max-height: 90vh;
+            }
+            .model-grid {
+                grid-template-columns: 1fr;
+            }
+            .model-selector-header,
+            .model-search,
+            .model-list-scroll {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -411,15 +577,13 @@
                 <input type="password" id="apiKey" class="config-input" placeholder="sk-......">
                 <div class="config-hint">所有信息仅保存在本地浏览器</div>
             </div>
-            <div class="config-group" style="position: relative;">
-                <label>模型</label>
+            <div class="config-group">
+                <label>模型 (推荐默认配置，也可点击获取后自行切换)</label>
                 <div style="display: flex; gap: 10px;">
-                    <input type="text" id="apiModel" class="config-input" placeholder="输入或选择模型" style="flex:1;">
+                    <input type="text" id="apiModel" class="config-input" placeholder="点击获取后选择模型" style="flex:1;" readonly>
                     <button id="loadModelsBtn" class="btn-load">获取</button>
                 </div>
-                <!-- 自定义模型列表下拉框 -->
-                <div id="modelListContainer" class="model-list-container"></div>
-                <div class="config-hint">推荐使用默认模型，也可点击获取后自行切换</div>
+                <div class="config-hint">如果gemini不可用，可切换成grok-4.2</div>
             </div>
             <div class="config-group">
                 <label>系统提示词</label>
@@ -427,16 +591,425 @@
             </div>
         </div>
     </div>
+
+    <!-- 模型选择器 -->
+    <div class="model-selector" id="modelSelector">
+        <div class="model-selector-panel">
+            <div class="model-selector-header">
+                <div>
+                    <a href="https://vipapi.online/pricing" target="_blank" class="model-selector-title" style="text-decoration: none; color: inherit;">🎯 模型广场(点击此处查看更多~)</a>
+                    <span class="model-count" id="modelCount"></span>
+                </div>
+                <button class="btn-close" id="closeModelSelector">×</button>
+            </div>
+            <div class="model-search">
+                <input type="text" class="model-search-input" id="modelSearchInput" placeholder="🔍 搜索模型名称...">
+            </div>
+            <div class="model-list-scroll" id="modelListScroll"></div>
+        </div>
+    </div>
 </div>
 
 <script>
-    // ================== 核心逻辑 ==================
-    
+    // ================== 工具函数 ==================
+    const Utils = {
+        escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        },
+        
+        debounce(fn, delay) {
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => fn.apply(this, args), delay);
+            };
+        }
+    };
+
+    // ================== 存储管理 ==================
+    const Storage = {
+        CHATS_KEY: 'ai_chats_v7',
+        THEME_KEY: 'theme',
+        
+        saveChats(chats) {
+            const dataToSave = chats.map(({ isLoading, ...rest }) => rest);
+            localStorage.setItem(this.CHATS_KEY, JSON.stringify(dataToSave));
+        },
+        
+        loadChats() {
+            let data = localStorage.getItem(this.CHATS_KEY);
+            if (!data) {
+                for (let i = 6; i >= 1; i--) {
+                    data = localStorage.getItem(`ai_chats_v${i}`) || localStorage.getItem('ai_chats');
+                    if (data) break;
+                }
+                if (data) {
+                    const oldChats = JSON.parse(data);
+                    oldChats.forEach(c => {
+                        c.isLoading = false;
+                        if (!c.apiUrl) c.apiUrl = 'https://vipapi.online/v1/chat/completions';
+                        if (!c.model) c.model = 'gemini-3.1-pro-preview';
+                    });
+                    return oldChats;
+                }
+            }
+            return data ? JSON.parse(data) : [];
+        },
+        
+        getTheme() {
+            return localStorage.getItem(this.THEME_KEY) || 'dark';
+        },
+        
+        setTheme(theme) {
+            localStorage.setItem(this.THEME_KEY, theme);
+        }
+    };
+
+    // ================== API 客户端 ==================
+    const APIClient = {
+        normalizeBaseUrl(url) {
+            return url ? url.trim() : '';
+        },
+
+        getBaseUrl(url) {
+            url = url.trim();
+            return url
+                .replace(/\/chat\/completions\/?$/, '')
+                .replace(/\/models\/?$/, '')
+                .replace(/\/$/, '');
+        },
+
+        getFullRequestUrl(url) {
+            url = url.trim();
+            if (url.endsWith('/chat/completions')) return url;
+            if (url.endsWith('/chat/completions/')) return url.slice(0, -1);
+            return this.getBaseUrl(url) + '/chat/completions';
+        },
+
+        async fetchModels(apiUrl, apiKey) {
+            if (!apiKey) throw new Error('请先输入 API 密钥');
+            if (!apiUrl) throw new Error('请先输入 API 地址');
+            
+            const baseUrl = this.getBaseUrl(apiUrl);
+            const response = await fetch(`${baseUrl}/models`, {
+                method: 'GET',
+                headers: { 
+                    'Authorization': `Bearer ${apiKey}`, 
+                    'Content-Type': 'application/json' 
+                }
+            });
+            
+            if (!response.ok) throw new Error(`获取失败: ${response.status}`);
+            
+            const data = await response.json();
+            let list = [];
+            if (Array.isArray(data)) list = data;
+            else if (data.data) list = data.data;
+            else if (data.models) list = data.models;
+            
+            return list.map(m => (typeof m === 'string' ? m : (m.id || m.model || m.name)))
+                       .filter(Boolean)
+                       .sort();
+        },
+
+        async sendMessage(chatConfig, messages) {
+            if (!chatConfig.apiKey) throw new Error('当前对话未配置 API 密钥');
+            if (!chatConfig.model) throw new Error('当前对话未配置模型');
+            if (!chatConfig.apiUrl) throw new Error('当前对话未配置 API 地址');
+            
+            const requestUrl = this.getFullRequestUrl(chatConfig.apiUrl);
+            const response = await fetch(requestUrl, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'Authorization': `Bearer ${chatConfig.apiKey}` 
+                },
+                body: JSON.stringify({ 
+                    model: chatConfig.model, 
+                    messages: messages, 
+                    temperature: 0.7 
+                })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error?.message || `请求失败: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            return data.choices[0].message.content;
+        }
+    };
+
+    // ================== 模型分类器（模型广场风格）==================
+    const ModelClassifier = {
+        // 按照模型广场的分类方式
+        categories: [
+            {
+                name: 'OpenAI',
+                icon: '🤖',
+                patterns: [/^gpt-/, /^o1-/, /^o3-/, /^chatgpt-/],
+                color: '#10a37f'
+            },
+            {
+                name: 'Claude',
+                icon: '🧠',
+                patterns: [/^claude-/],
+                color: '#d97706'
+            },
+            {
+                name: 'Gemini',
+                icon: '💎',
+                patterns: [/^gemini-/],
+                color: '#4285f4'
+            },
+            {
+                name: '通义千问',
+                icon: '🔮',
+                patterns: [/^qwen-/, /^qwq-/],
+                color: '#ff6a00'
+            },
+            {
+                name: 'DeepSeek',
+                icon: '🔍',
+                patterns: [/^deepseek-/],
+                color: '#0066ff'
+            },
+            {
+                name: 'Llama',
+                icon: '🦙',
+                patterns: [/^llama-/, /^meta-llama/, /^codellama-/],
+                color: '#0081fb'
+            },
+            {
+                name: 'Mistral',
+                icon: '🌪️',
+                patterns: [/^mistral-/, /^mixtral-/, /^codestral-/],
+                color: '#ff7000'
+            },
+            {
+                name: '智谱AI',
+                icon: '📚',
+                patterns: [/^glm-/, /^chatglm-/],
+                color: '#1e40af'
+            },
+            {
+                name: 'Moonshot',
+                icon: '🌙',
+                patterns: [/^moonshot-/, /^kimi-/],
+                color: '#6366f1'
+            },
+            {
+                name: 'Yi',
+                icon: '🎯',
+                patterns: [/^yi-/],
+                color: '#8b5cf6'
+            },
+            {
+                name: '图像生成',
+                icon: '🎨',
+                patterns: [/^dall-e-/, /^stable-/, /^midjourney/, /^sdxl/, /^flux-/],
+                color: '#ec4899'
+            },
+            {
+                name: '语音模型',
+                icon: '🎤',
+                patterns: [/^whisper-/, /^tts-/, /^bark/, /^suno-/],
+                color: '#14b8a6'
+            },
+            {
+                name: '代码模型',
+                icon: '💻',
+                patterns: [/^code-/, /^starcoder/, /^codellama-/, /^deepseek-coder/],
+                color: '#22c55e'
+            },
+            {
+                name: '其他模型',
+                icon: '📦',
+                patterns: [],
+                color: '#6b7280'
+            }
+        ],
+
+        classify(models) {
+            const result = [];
+            const categorized = new Set();
+
+            // 按定义的顺序分类
+            for (const category of this.categories) {
+                if (category.name === '其他模型') continue;
+                
+                const matchedModels = [];
+                models.forEach(model => {
+                    if (categorized.has(model)) return;
+                    
+                    for (const pattern of category.patterns) {
+                        if (pattern.test(model)) {
+                            matchedModels.push(model);
+                            categorized.add(model);
+                            break;
+                        }
+                    }
+                });
+
+                if (matchedModels.length > 0) {
+                    result.push({
+                        name: category.name,
+                        icon: category.icon,
+                        color: category.color,
+                        models: matchedModels.sort((a, b) => b.localeCompare(a))
+                    });
+                }
+            }
+
+            // 未分类的模型
+            const uncategorized = models.filter(m => !categorized.has(m)).sort();
+            if (uncategorized.length > 0) {
+                const otherCategory = this.categories.find(c => c.name === '其他模型');
+                result.push({
+                    name: otherCategory.name,
+                    icon: otherCategory.icon,
+                    color: otherCategory.color,
+                    models: uncategorized.sort((a, b) => b.localeCompare(a))
+                });
+            }
+
+            return result;
+        },
+
+        // 提取版本信息
+        extractVersion(modelName) {
+            // 匹配版本号
+            const versionMatch = modelName.match(/-(\d+(?:\.\d+)*)(?:-|$)/);
+            if (versionMatch) return 'v' + versionMatch[1];
+            
+            // 匹配参数量
+            const sizeMatch = modelName.match(/-(\d+b)(?:-|$)/i);
+            if (sizeMatch) return sizeMatch[1].toUpperCase();
+            
+            // 匹配特殊标识
+            const tags = [];
+            if (/preview/i.test(modelName)) tags.push('Preview');
+            if (/latest/i.test(modelName)) tags.push('Latest');
+            if (/instruct/i.test(modelName)) tags.push('Instruct');
+            if (/chat/i.test(modelName)) tags.push('Chat');
+            if (/turbo/i.test(modelName)) tags.push('Turbo');
+            if (/mini/i.test(modelName)) tags.push('Mini');
+            
+            return tags.length > 0 ? tags.join(' · ') : null;
+        }
+    };
+
+    // ================== 模型选择器 UI ==================
+    const ModelSelector = {
+        element: null,
+        models: [],
+        categories: [],
+        selectedModel: null,
+        onSelect: null,
+
+        init() {
+            this.element = document.getElementById('modelSelector');
+            this.bindEvents();
+        },
+
+        bindEvents() {
+            document.getElementById('closeModelSelector').addEventListener('click', () => this.hide());
+            this.element.addEventListener('click', (e) => {
+                if (e.target === this.element) this.hide();
+            });
+            
+            const searchInput = document.getElementById('modelSearchInput');
+            searchInput.addEventListener('input', Utils.debounce((e) => {
+                this.render(e.target.value);
+            }, 200));
+        },
+
+        show(models, currentModel, onSelect) {
+            this.models = models;
+            this.selectedModel = currentModel;
+            this.onSelect = onSelect;
+            this.categories = ModelClassifier.classify(models);
+            
+            document.getElementById('modelCount').textContent = `${models.length} 个模型`;
+            document.getElementById('modelSearchInput').value = '';
+            this.render();
+            this.element.classList.add('show');
+        },
+
+        hide() {
+            this.element.classList.remove('show');
+        },
+
+        render(filter = '') {
+            const container = document.getElementById('modelListScroll');
+            const filterLower = filter.toLowerCase();
+            
+            let html = '';
+            let visibleCount = 0;
+
+            this.categories.forEach(category => {
+                const filteredModels = filter 
+                    ? category.models.filter(m => m.toLowerCase().includes(filterLower))
+                    : category.models;
+
+                if (filteredModels.length === 0) return;
+
+                visibleCount += filteredModels.length;
+                
+                html += `
+                    <div class="model-category">
+                        <div class="model-category-header">
+                            <div class="model-category-icon">${category.icon}</div>
+                            <span class="model-category-name">${category.name}</span>
+                            <span class="model-category-count">${filteredModels.length}</span>
+                        </div>
+                        <div class="model-grid">
+                            ${filteredModels.map(model => {
+                                const version = ModelClassifier.extractVersion(model);
+                                const isSelected = model === this.selectedModel;
+                                return `
+                                    <div class="model-item ${isSelected ? 'selected' : ''}" data-model="${Utils.escapeHtml(model)}">
+                                        <span class="model-item-name">${Utils.escapeHtml(model)}</span>
+                                        ${version ? `<span class="model-item-version">${Utils.escapeHtml(version)}</span>` : ''}
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (visibleCount === 0) {
+                html = `
+                    <div class="model-empty">
+                        <div class="model-empty-icon">🔍</div>
+                        <div>未找到匹配的模型</div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+
+            // 绑定点击事件
+            container.querySelectorAll('.model-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const model = item.getAttribute('data-model');
+                    this.selectedModel = model;
+                    if (this.onSelect) this.onSelect(model);
+                    this.hide();
+                });
+            });
+        }
+    };
+
+    // ================== 聊天管理器 ==================
     class ChatManager {
         constructor() {
-            this.chats = this.loadChats();
+            this.chats = Storage.loadChats();
             this.currentChatId = null;
-            this.init();
         }
 
         init() {
@@ -489,7 +1062,7 @@
             };
             
             this.chats.unshift(chat);
-            this.saveChats();
+            Storage.saveChats(this.chats);
             this.selectChat(chat.id);
             this.renderChatList();
         }
@@ -506,7 +1079,6 @@
                 this.updateConfigPanel();
             }
             
-            // 移动端选择对话后自动关闭侧边栏
             if (window.innerWidth <= 768) {
                 document.getElementById('sidebar').classList.remove('mobile-open');
                 document.getElementById('overlay').classList.remove('show');
@@ -538,7 +1110,7 @@
             const chat = this.chats.find(c => c.id === chatId);
             if (!chat) return;
             chat.messages.push({ role, content, timestamp: new Date().toISOString() });
-            this.saveChats();
+            Storage.saveChats(this.chats);
             
             if (chatId === this.currentChatId) {
                 this.updateChatTitle(chat);
@@ -551,7 +1123,7 @@
             const firstUserMsg = chat.messages.find(m => m.role === 'user');
             if (firstUserMsg && chat.title === '与流星河夜的新对话~') {
                 chat.title = firstUserMsg.content.substring(0, 20);
-                this.saveChats();
+                Storage.saveChats(this.chats);
                 document.getElementById('chatTitle').textContent = chat.title;
                 this.renderChatList();
             }
@@ -561,7 +1133,7 @@
             const chat = this.chats.find(c => c.id === chatId);
             if (chat && newTitle.trim()) {
                 chat.title = newTitle.trim();
-                this.saveChats();
+                Storage.saveChats(this.chats);
                 if (chatId === this.currentChatId) {
                     document.getElementById('chatTitle').textContent = chat.title;
                 }
@@ -575,13 +1147,13 @@
             const chat = this.getCurrentChat();
             if (chat) {
                 chat[key] = value;
-                this.saveChats();
+                Storage.saveChats(this.chats);
             }
         }
 
         deleteChat(chatId) {
             this.chats = this.chats.filter(c => c.id !== chatId);
-            this.saveChats();
+            Storage.saveChats(this.chats);
             if (this.currentChatId === chatId) {
                 this.currentChatId = this.chats[0]?.id || null;
                 if (this.currentChatId) {
@@ -616,13 +1188,11 @@
                 return `
                 <div class="chat-item ${chat.id === this.currentChatId ? 'active' : ''}" 
                      onclick="chatManager.selectChat(${chat.id})">
-                    <span class="chat-item-title">${chat.title}</span>
+                    <span class="chat-item-title">${Utils.escapeHtml(chat.title)}</span>
                     ${actionsHtml}
                 </div>
             `}).join('');
         }
-
-        /* by liuxingheye */
 
         renderMessages() {
             const container = document.getElementById('chatMessages');
@@ -634,260 +1204,175 @@
             
             container.innerHTML = chat.messages.map(msg => `
                 <div class="message ${msg.role}">
-                    <div class="message-bubble">${this.escapeHtml(msg.content)}</div>
+                    <div class="message-bubble">${Utils.escapeHtml(msg.content)}</div>
                 </div>
             `).join('');
             container.scrollTop = container.scrollHeight;
         }
-
-        escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        saveChats() {
-            const dataToSave = this.chats.map(c => {
-                const { isLoading, ...rest } = c;
-                return rest;
-            });
-            localStorage.setItem('ai_chats_v6', JSON.stringify(dataToSave));
-        }
-
-        loadChats() {
-            let data = localStorage.getItem('ai_chats_v6');
-            if (!data) {
-                data = localStorage.getItem('ai_chats_v5') || localStorage.getItem('ai_chats_v4') || localStorage.getItem('ai_chats_v3') || localStorage.getItem('ai_chats_v2') || localStorage.getItem('ai_chats');
-                if (data) {
-                    const oldChats = JSON.parse(data);
-                    oldChats.forEach(c => {
-                        c.isLoading = false;
-                        if(!c.apiUrl) c.apiUrl = 'https://vipapi.online/v1/chat/completions';
-                        if(!c.model) c.model = 'gemini-3.1-pro-preview';
-                    });
-                    return oldChats;
-                }
-            }
-            return data ? JSON.parse(data) : [];
-        }
     }
 
-    class APIClient {
-        normalizeBaseUrl(url) {
-            if (!url) return '';
-            return url.trim();
-        }
+    // ================== UI 控制器 ==================
+    const UIController = {
+        sidebar: null,
+        overlay: null,
+        configDrawer: null,
+        themeBtn: null,
 
-        getBaseUrl(url) {
-            url = url.trim();
-            return url
-                .replace(/\/chat\/completions\/?$/, '')
-                .replace(/\/models\/?$/, '')
-                .replace(/\/$/, '');
-        }
+        init() {
+            this.sidebar = document.getElementById('sidebar');
+            this.overlay = document.getElementById('overlay');
+            this.configDrawer = document.getElementById('configDrawer');
+            this.themeBtn = document.getElementById('themeBtn');
+            
+            this.initTheme();
+            this.bindEvents();
+        },
 
-        getFullRequestUrl(url) {
-            url = url.trim();
-            if (url.endsWith('/chat/completions')) return url;
-            if (url.endsWith('/chat/completions/')) return url.slice(0, -1);
-            return this.getBaseUrl(url) + '/chat/completions';
-        }
+        initTheme() {
+            const theme = Storage.getTheme();
+            this.applyTheme(theme);
+        },
 
-        async fetchModels(apiUrl, apiKey) {
-            if (!apiKey) throw new Error('请先输入 API 密钥');
-            if (!apiUrl) throw new Error('请先输入 API 地址');
-            
-            const baseUrl = this.getBaseUrl(apiUrl);
-            
-            const response = await fetch(`${baseUrl}/models`, {
-                method: 'GET',
-                headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' }
-            });
-            if (!response.ok) throw new Error(`获取失败: ${response.status}`);
-            const data = await response.json();
-            let list = [];
-            if (Array.isArray(data)) list = data;
-            else if (data.data) list = data.data;
-            else if (data.models) list = data.models;
-            return list.map(m => (typeof m === 'string' ? m : (m.id || m.model || m.name))).filter(Boolean).sort();
-        }
+        applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            this.themeBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+            Storage.setTheme(theme);
+        },
 
-        async sendMessage(chatConfig, messages) {
-            if (!chatConfig.apiKey) throw new Error('当前对话未配置 API 密钥');
-            if (!chatConfig.model) throw new Error('当前对话未配置模型');
-            if (!chatConfig.apiUrl) throw new Error('当前对话未配置 API 地址');
-            
-            const requestUrl = this.getFullRequestUrl(chatConfig.apiUrl);
-            
-            const response = await fetch(requestUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${chatConfig.apiKey}` },
-                body: JSON.stringify({ model: chatConfig.model, messages: messages, temperature: 0.7 })
-            });
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.error?.message || `请求失败: ${response.status}`);
+        toggleTheme() {
+            const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            this.applyTheme(newTheme);
+        },
+
+        toggleSidebar() {
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                this.sidebar.classList.toggle('mobile-open');
+                this.overlay.classList.toggle('show');
+            } else {
+                this.sidebar.classList.toggle('collapsed-pc');
             }
-            const data = await response.json();
-            return data.choices[0].message.content;
-        }
-    }
+        },
 
-    // ================== 初始化与事件绑定 ==================
-    
+        closeSidebar() {
+            this.sidebar.classList.remove('mobile-open');
+            this.overlay.classList.remove('show');
+        },
+
+        toggleConfigDrawer(show) {
+            if (show) {
+                this.configDrawer.classList.add('open');
+            } else {
+                this.configDrawer.classList.remove('open');
+            }
+        },
+
+        bindEvents() {
+            this.themeBtn.addEventListener('click', () => this.toggleTheme());
+            document.getElementById('menuBtn').addEventListener('click', () => this.toggleSidebar());
+            this.overlay.addEventListener('click', () => this.closeSidebar());
+            document.getElementById('configBtn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.toggleConfigDrawer(true);
+            });
+            document.getElementById('closeConfigBtn').addEventListener('click', () => this.toggleConfigDrawer(false));
+            document.querySelector('.main-chat').addEventListener('click', () => this.toggleConfigDrawer(false));
+        }
+    };
+
+    // ================== 初始化 ==================
     const chatManager = new ChatManager();
-    const apiClient = new APIClient();
-
-    // DOM 元素引用
-    const menuBtn = document.getElementById('menuBtn');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
-    const configBtn = document.getElementById('configBtn');
-    const configDrawer = document.getElementById('configDrawer');
-    const closeConfigBtn = document.getElementById('closeConfigBtn');
-    const themeBtn = document.getElementById('themeBtn');
     
-    const newChatBtn = document.getElementById('newChatBtn');
-    const sendBtn = document.getElementById('sendBtn');
-    const messageInput = document.getElementById('messageInput');
-    const exportBtn = document.getElementById('exportBtn');
-    const deleteBtn = document.getElementById('deleteBtn');
-    const loadModelsBtn = document.getElementById('loadModelsBtn');
-    
-    const modelListContainer = document.getElementById('modelListContainer');
-    const apiModelInput = document.getElementById('apiModel');
-
-    const apiUrlInput = document.getElementById('apiUrl');
-    const apiKeyInput = document.getElementById('apiKey');
-    const systemPromptInput = document.getElementById('systemPrompt');
-
-    // --- 主题切换 ---
-    function applyTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        themeBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
-        localStorage.setItem('theme', theme);
-    }
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    applyTheme(savedTheme);
-
-    themeBtn.addEventListener('click', () => {
-        const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        applyTheme(newTheme);
+    document.addEventListener('DOMContentLoaded', () => {
+        UIController.init();
+        ModelSelector.init();
+        chatManager.init();
+        bindAppEvents();
     });
 
-    // --- 侧边栏逻辑 ---
-    function toggleSidebar() {
-        const isMobile = window.innerWidth <= 768;
-        
-        if (isMobile) {
-            sidebar.classList.toggle('mobile-open');
-            overlay.classList.toggle('show');
-        } else {
-            sidebar.classList.toggle('collapsed-pc');
-        }
-    }
+    function bindAppEvents() {
+        const newChatBtn = document.getElementById('newChatBtn');
+        const sendBtn = document.getElementById('sendBtn');
+        const messageInput = document.getElementById('messageInput');
+        const exportBtn = document.getElementById('exportBtn');
+        const deleteBtn = document.getElementById('deleteBtn');
+        const loadModelsBtn = document.getElementById('loadModelsBtn');
+        const apiUrlInput = document.getElementById('apiUrl');
+        const apiKeyInput = document.getElementById('apiKey');
+        const systemPromptInput = document.getElementById('systemPrompt');
 
-    menuBtn.addEventListener('click', toggleSidebar);
-    // 点击遮罩关闭侧边栏
-    overlay.addEventListener('click', () => {
-        sidebar.classList.remove('mobile-open');
-        overlay.classList.remove('show');
-    });
-
-    // --- 抽屉逻辑 (无黑幕) ---
-    function toggleConfigDrawer(show) {
-        if (show) {
-            configDrawer.classList.add('open');
-            chatManager.updateConfigPanel();
-        } else {
-            configDrawer.classList.remove('open');
-            modelListContainer.classList.remove('show');
-        }
-    }
-
-    // 点击主区域关闭配置面板
-    document.querySelector('.main-chat').addEventListener('click', (e) => {
-        if (configDrawer.classList.contains('open')) {
-            toggleConfigDrawer(false);
-        }
-    });
-
-    configBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleConfigDrawer(true);
-    });
-    
-    closeConfigBtn.addEventListener('click', () => toggleConfigDrawer(false));
-
-        /* QQ: 228085292 */
-
-
-    newChatBtn.addEventListener('click', () => {
-        chatManager.createNewChat();
-        // 移动端新建后自动收起侧边栏
-        if (window.innerWidth <= 768) {
-            sidebar.classList.remove('mobile-open');
-            overlay.classList.remove('show');
-        }
-    });
-
-    exportBtn.addEventListener('click', () => chatManager.exportChat(chatManager.currentChatId));
-    deleteBtn.addEventListener('click', () => {
-        if (confirm('流星API提示您~确定删除此聊天记录吗？')) chatManager.deleteChat(chatManager.currentChatId);
-    });
-
-    // 配置输入实时保存
-    apiUrlInput.addEventListener('input', (e) => chatManager.updateCurrentChatConfig('apiUrl', e.target.value));
-    apiKeyInput.addEventListener('input', (e) => chatManager.updateCurrentChatConfig('apiKey', e.target.value));
-    apiModelInput.addEventListener('input', (e) => {
-        chatManager.updateCurrentChatConfig('model', e.target.value);
-        modelListContainer.classList.remove('show');
-    });
-    systemPromptInput.addEventListener('input', (e) => chatManager.updateCurrentChatConfig('systemPrompt', e.target.value));
-
-    // 加载模型并展示列表
-    loadModelsBtn.addEventListener('click', async () => {
-        const btn = loadModelsBtn;
-        btn.disabled = true; btn.textContent = '加载中...';
-        try {
-            const chat = chatManager.getCurrentChat();
-            if(!chat) return;
-            const models = await apiClient.fetchModels(chat.apiUrl, chat.apiKey);
-            
-            modelListContainer.innerHTML = models.map(m => 
-                `<div class="model-item" data-model="${m}">${m}</div>`
-            ).join('');
-            
-            modelListContainer.classList.add('show');
-            
-            modelListContainer.querySelectorAll('.model-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const selectedModel = item.getAttribute('data-model');
-                    apiModelInput.value = selectedModel;
-                    chatManager.updateCurrentChatConfig('model', selectedModel);
-                    modelListContainer.classList.remove('show');
-                });
-            });
-
-            if (models.length === 0) {
-                modelListContainer.innerHTML = '<div class="model-item" style="color: var(--text-light); cursor: default;">未获取到模型</div>';
+        newChatBtn.addEventListener('click', () => {
+            chatManager.createNewChat();
+            if (window.innerWidth <= 768) {
+                UIController.closeSidebar();
             }
+        });
 
-        } catch (error) {
-            alert('加载模型失败: ' + error.message);
-            modelListContainer.classList.remove('show');
-        } finally {
-            btn.disabled = false; btn.textContent = '获取';
-        }
-    });
-    
-    document.addEventListener('click', (e) => {
-        if (!configDrawer.contains(e.target)) {
-            modelListContainer.classList.remove('show');
-        }
-    });
+        exportBtn.addEventListener('click', () => chatManager.exportChat(chatManager.currentChatId));
+        deleteBtn.addEventListener('click', () => {
+            if (confirm('流星API提示您~确定删除此聊天记录吗？')) {
+                chatManager.deleteChat(chatManager.currentChatId);
+            }
+        });
 
-    // --- 重命名处理函数 ---
+        apiUrlInput.addEventListener('input', (e) => chatManager.updateCurrentChatConfig('apiUrl', e.target.value));
+        apiKeyInput.addEventListener('input', (e) => chatManager.updateCurrentChatConfig('apiKey', e.target.value));
+        systemPromptInput.addEventListener('input', (e) => chatManager.updateCurrentChatConfig('systemPrompt', e.target.value));
+
+        loadModelsBtn.addEventListener('click', async () => {
+            const btn = loadModelsBtn;
+            btn.disabled = true;
+            btn.textContent = '加载中...';
+            try {
+                const chat = chatManager.getCurrentChat();
+                if (!chat) return;
+                
+                const models = await APIClient.fetchModels(chat.apiUrl, chat.apiKey);
+                
+                ModelSelector.show(models, chat.model, (selectedModel) => {
+                    document.getElementById('apiModel').value = selectedModel;
+                    chatManager.updateCurrentChatConfig('model', selectedModel);
+                });
+            } catch (error) {
+                alert('加载模型失败: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '获取';
+            }
+        });
+
+        sendBtn.addEventListener('click', sendMessage);
+
+        messageInput.addEventListener('focus', () => {
+            setTimeout(() => {
+                messageInput.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 300);
+        });
+
+        messageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                const chat = chatManager.getCurrentChat();
+                if (chat && !chat.isLoading) {
+                    sendMessage();
+                }
+            } else if (e.key === 'Enter' && (e.ctrlKey || e.shiftKey)) {
+                const start = messageInput.selectionStart;
+                const end = messageInput.selectionEnd;
+                messageInput.value = messageInput.value.substring(0, start) + "\n" + messageInput.value.substring(end);
+                messageInput.selectionStart = messageInput.selectionEnd = start + 1;
+                messageInput.style.height = 'auto';
+                messageInput.style.height = Math.min(messageInput.scrollHeight, 120) + 'px';
+                e.preventDefault();
+            }
+        });
+        
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+    }
+
     window.handleRename = function(chatId) {
         const chat = chatManager.chats.find(c => c.id === chatId);
         if (!chat) return;
@@ -908,8 +1393,7 @@
         input.select();
 
         const save = () => {
-            const newTitle = input.value;
-            chatManager.renameChat(chatId, newTitle);
+            chatManager.renameChat(chatId, input.value);
         };
 
         input.addEventListener('blur', save);
@@ -923,8 +1407,8 @@
         });
     };
 
-    // --- 核心发送逻辑 ---
     async function sendMessage() {
+        const messageInput = document.getElementById('messageInput');
         const message = messageInput.value.trim();
         if (!message) return;
 
@@ -945,7 +1429,7 @@
         messages.push(...chat.messages.map(m => ({ role: m.role, content: m.content })));
 
         try {
-            const response = await apiClient.sendMessage({
+            const response = await APIClient.sendMessage({
                 apiUrl: chat.apiUrl,
                 apiKey: chat.apiKey,
                 model: chat.model
@@ -967,39 +1451,6 @@
             }
         }
     }
-
-    sendBtn.addEventListener('click', sendMessage);
-
-    // 移动端键盘适配：输入框聚焦时滚动到可视区域
-    messageInput.addEventListener('focus', () => {
-        setTimeout(() => {
-            messageInput.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }, 300); // 延迟等待键盘弹起
-    });
-
-    messageInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
-            e.preventDefault();
-            const chat = chatManager.getCurrentChat();
-            if (chat && !chat.isLoading) {
-                sendMessage();
-            }
-        } else if (e.key === 'Enter' && (e.ctrlKey || e.shiftKey)) {
-            const start = messageInput.selectionStart;
-            const end = messageInput.selectionEnd;
-            messageInput.value = messageInput.value.substring(0, start) + "\n" + messageInput.value.substring(end);
-            messageInput.selectionStart = messageInput.selectionEnd = start + 1;
-            messageInput.style.height = 'auto';
-            messageInput.style.height = Math.min(messageInput.scrollHeight, 120) + 'px';
-            e.preventDefault();
-        }
-    });
-    
-    messageInput.addEventListener('input', function() {
-        this.style.height = 'auto';
-        this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-    });
-
 </script>
 </body>
 </html>
