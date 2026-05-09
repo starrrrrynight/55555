@@ -580,10 +580,10 @@
             <div class="config-group">
                 <label>模型 (推荐默认配置，也可点击获取后自行切换)</label>
                 <div style="display: flex; gap: 10px;">
-                    <input type="text" id="apiModel" class="config-input" placeholder="点击获取后选择模型" style="flex:1;" readonly>
+                    <input type="text" id="apiModel" class="config-input" placeholder="输入模型名称或点击获取选择" style="flex:1;">
                     <button id="loadModelsBtn" class="btn-load">获取</button>
                 </div>
-                <div class="config-hint">如果gemini不可用，可切换成grok-4.2</div>
+                <div class="config-hint">支持手动输入模型名称，或点击"获取"从API拉取可用模型列表。如果gemini不可用，可切换成grok-4.2</div>
             </div>
             <div class="config-group">
                 <label>系统提示词</label>
@@ -1318,6 +1318,19 @@
         apiUrlInput.addEventListener('input', (e) => chatManager.updateCurrentChatConfig('apiUrl', e.target.value));
         apiKeyInput.addEventListener('input', (e) => chatManager.updateCurrentChatConfig('apiKey', e.target.value));
         systemPromptInput.addEventListener('input', (e) => chatManager.updateCurrentChatConfig('systemPrompt', e.target.value));
+
+        const apiModelInput = document.getElementById('apiModel');
+        apiModelInput.addEventListener('input', (e) => chatManager.updateCurrentChatConfig('model', e.target.value));
+        apiModelInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const val = e.target.value.trim();
+                if (val) {
+                    chatManager.updateCurrentChatConfig('model', val);
+                    e.target.blur();
+                }
+            }
+        });
 
         loadModelsBtn.addEventListener('click', async () => {
             const btn = loadModelsBtn;
